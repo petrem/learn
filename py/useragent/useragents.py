@@ -14,7 +14,6 @@ import sqlite3
 import sys
 
 
-APIKEY = "4f916da2"
 DB_NAME = "useragents.sqlite"
 
 INFO_HEADERS = ("ua_type", "ua_brand", "ua_name", "ua_version", "ua_url",
@@ -37,12 +36,12 @@ def dict_factory(cursor, row):
     return {col[0]: row[idx] for idx, col in enumerate(cursor.description)}
 
 
-def get_useragent_info_from_api(useragent):
+def get_useragent_info_from_api(useragent, apikey):
     headers = {
         "Accept": "application/json"
     }
     url = "https://useragentapi.com/api/v4/json/{apikey}/{agent}".format(
-        apikey=APIKEY,
+        apikey=apikey,
         agent=urllib.parse.quote(useragent, safe=''))
     response = requests.get(url, headers=headers, verify=True)
     if response.status_code != 200:
@@ -81,7 +80,7 @@ def get_info(cursor, useragent, args):
     elif args.db_only:
         return _error("Useragent not in DB")
     else:
-        info = get_useragent_info_from_api(useragent)
+        info = get_useragent_info_from_api(useragent, args.apikey)
         if "data" in info:
             info_row = [
                 info["data"].get(field, "") for field in INFO_HEADERS]
@@ -116,6 +115,9 @@ def main():
         parser.error(
             "Need to specify an output file when reading standard input")
 
+    if not args.db_only:
+        with open('.apikey', 'rt') as f:
+            args.apikey = f.readline().strip()
     with conn,\
             open(args.input, "rt") if args.input else sys.stdin as f_in,\
             open(output_file, "wt") as csvfile:
