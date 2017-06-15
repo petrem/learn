@@ -1,0 +1,16 @@
+#!/bin/sh
+
+IPTRESTORE=/sbin/iptables-restore
+IPTCONF=/etc/network/iptables.conf
+IP6TRESTORE=/sbin/ip6tables-restore
+IP6TCONF=/etc/network/ip6tables.conf
+
+[ "$IFACE" = "lo" ] || exit 0
+
+if [ -x $IPTRESTORE -a -r $IPTCONF ]; then
+    $IPTRESTORE < $IPTCONF
+fi
+
+if [ -x $IP6TRESTORE -a -r $IP6TCONF ]; then
+    $IP6TRESTORE < $IP6TCONF
+fi
