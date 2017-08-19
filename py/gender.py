@@ -1,5 +1,21 @@
 #!/usr/bin/env python3
 
+"""
+A simplistic Gender class.
+
+x = Gender(1)
+print("str(x): {0}, repr(x): {0!r}".format(x))
+print(Gender.Male, type(Gender.Male))
+print(x, type(x))
+print("x equals Male", x == Gender.Male)
+print("x equals Female", x == Gender.Female)
+print("2 equalas Female", 2 == Gender.Female)
+print("3 equals Male", 3 == Gender.Male)
+print("Gender(M)", Gender('M'))
+print(Gender('m') == Gender.Male)
+print(Gender('m') is Gender.Male)
+"""
+
 
 class GenderMeta(type):
 
@@ -67,16 +83,3 @@ class Gender(int, metaclass=GenderMeta):
             return self is other
         else:
             return self.real == self._map(other)
-
-
-x = Gender(1)
-print("str(x): {0}, repr(x): {0!r}".format(x))
-print(Gender.Male, type(Gender.Male))
-print(x, type(x))
-print("x equals Male", x == Gender.Male)
-print("x equals Female", x == Gender.Female)
-print("2 equalas Female", 2 == Gender.Female)
-print("3 equals Male", 3 == Gender.Male)
-print("Gender(M)", Gender('M'))
-print(Gender('m') == Gender.Male)
-print(Gender('m') is Gender.Male)
