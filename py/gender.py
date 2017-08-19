@@ -54,13 +54,13 @@ class Gender(int, metaclass=GenderMeta):
         return cls._instances[m]
 
     def __repr__(self):
+        return "Gender.{}".format(self)
+
+    def __str__(self):
         return {
             1: "Male",
             2: "Female"
         }.get(self.real, "Unknown")
-
-    def __str__(self):
-        return self.__repr__()
 
     def __eq__(self, other):
         if isinstance(other, Gender):
@@ -70,6 +70,7 @@ class Gender(int, metaclass=GenderMeta):
 
 
 x = Gender(1)
+print("str(x): {0}, repr(x): {0!r}".format(x))
 print(Gender.Male, type(Gender.Male))
 print(x, type(x))
 print("x equals Male", x == Gender.Male)
