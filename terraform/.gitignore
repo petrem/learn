@@ -1,2 +1,4 @@
 private.*
 .terraform
+pk-learn.pem
+*.backup

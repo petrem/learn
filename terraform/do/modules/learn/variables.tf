@@ -12,3 +12,5 @@ variable "num_instances" {}
 variable "do_ssh_keys" { type="list" }
 
 variable "taglist" {type="list"}
+
+# variable "do_token" {}

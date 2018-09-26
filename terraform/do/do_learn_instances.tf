@@ -7,7 +7,7 @@ module "learn_droplets" {
   taglist = ["${digitalocean_tag.learn.name}"]
 }
 
-resource "digitalocean_tag" "learn" {
-         name = "learn"
-}
+# resource "digitalocean_tag" "learn" {
+#          name = "learn"
+# }
 
