@@ -3,4 +3,5 @@
 *.pyc
 .apikey
 .ipynb_checkpoints
+.coverage
 py/sci/introduction_to_ml_with_python-master
