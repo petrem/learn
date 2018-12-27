@@ -49,7 +49,7 @@ hanoi' n s d towers
     , (addDisc topSourceDisc $ towerN towers d, d)
     , (towerN towers otherTower, otherTower)]
   | otherwise =
-    hanoi' (n - 1) otherTower d $ hanoi' 1 s d $ hanoi' (n - 1) s otherTower towers
+      hanoi' (n - 1) otherTower d $ hanoi' 1 s d $ hanoi' (n - 1) s otherTower towers
   where otherTower = 6 - s - d
         topSourceDisc = topDisc $ towerN towers s
 
@@ -65,3 +65,31 @@ generateInitial n =
 
 
 hanoi n s d = hanoi' n s d $ generateInitial n
+
+-- display
+
+mirrored :: [a] -> [a] -> [a]
+mirrored xs ys = xs ++ ys ++ reverse xs
+
+spaces :: Int -> [Char]
+spaces x = replicate x ' '
+
+strDisc :: Int -> Int -> [Char]
+strDisc d n
+  | d == 0 = mirrored (spaces n) (padded "|")
+  | otherwise = mirrored (spaces (n - d) ++ replicate d '-') (padded (show d))
+  where
+    width :: Int
+    width = 1 + (floor $ logBase 10 $ fromIntegral n)
+
+    sides :: (Fractional b) => [Char] -> b
+    sides cs = (fromIntegral width - fromIntegral (length cs)) / 2
+
+    padded :: [Char] -> [Char]
+    padded cs = spaces (ceiling (sides cs)) ++ cs ++ spaces (floor (sides cs))
+
+-- sides :: (Fractional b) => Int -> [a] -> b
+-- sides w xs = (fromIntegral w - fromIntegral (length xs)) / 2
+
+-- width :: Int -> Int
+-- width n = 1 + (floor (logBase 10 $ fromIntegral n))
