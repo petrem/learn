@@ -3,16 +3,12 @@
 type Tower = [Int]
 type Towers t = (t, t, t)
 
-t1 (t, _, _) = t
-t2 (_, t, _) = t
-t3 (_, _, t) = t
-
 tuplify3 [x1, x2, x3] = (x1, x2, x3)
 
-towerN towers n  -- todo: is there a better way?
-  | n == 1 = t1 towers
-  | n == 2 = t2 towers
-  | n == 3 = t3 towers
+towerN (t1, t2, t3) n  -- todo: is there a better way?
+  | n == 1 = t1
+  | n == 2 = t2
+  | n == 3 = t3
 
 type TowersWithOrder t o = [(t, o)]
 
@@ -74,8 +70,14 @@ mirrored xs ys = xs ++ ys ++ reverse xs
 spaces :: Int -> [Char]
 spaces x = replicate x ' '
 
+-- sides :: (Fractional b) => Int -> [a] -> b
+-- sides w xs = (fromIntegral w - fromIntegral (length xs)) / 2
+
+-- width :: Int -> Int
+-- width n = 1 + (floor (logBase 10 $ fromIntegral n))
+
 strDisc :: Int -> Int -> [Char]
-strDisc d n
+strDisc n d
   | d == 0 = mirrored (spaces n) (padded "|")
   | otherwise = mirrored (spaces (n - d) ++ replicate d '-') (padded (show d))
   where
@@ -88,8 +90,14 @@ strDisc d n
     padded :: [Char] -> [Char]
     padded cs = spaces (ceiling (sides cs)) ++ cs ++ spaces (floor (sides cs))
 
--- sides :: (Fractional b) => Int -> [a] -> b
--- sides w xs = (fromIntegral w - fromIntegral (length xs)) / 2
+join _ [] = error "empty list"
+join _ [y] = [y]
+join x (y:ys) = y : x : join x ys
 
--- width :: Int -> Int
--- width n = 1 + (floor (logBase 10 $ fromIntegral n))
+strTowers towers =
+  foldl (++) "" $ join "\n" $ map ((foldl (++) "") . (join " ") . (map (strDisc n))) layers
+--  foldl (++) "" $ foldl (++) [] $ map (map (strDisc n)) $ layers
+  where
+    n = length $ towerN towers 1
+    reversedTowers = [reverse $ towerN towers i | i <- [1..3]]
+    layers = [map (!! i) reversedTowers | i <- [0..n-1]]
