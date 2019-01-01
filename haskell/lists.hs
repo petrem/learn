@@ -175,3 +175,7 @@ splitBy :: (Eq a) => [a] -> [a] -> [[a]]
 splitBy [] xs = [xs]
 splitBy _ [] = []
 splitBy xs ys = takeWhile (`notElem` xs) ys : splitBy xs (dropWhile (`elem` xs) (dropWhile (`notElem` xs) ys))
+
+-- join as in python's join
+join _ [y] = [y]
+join x (y:ys) = y : x : join x ys
