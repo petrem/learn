@@ -1,0 +1,2 @@
+* understand copied solution for #6
+* continue second solution for #7
