@@ -8,5 +8,5 @@ degToMinSecRounded x = normalize $ wholePartsWithRoundLast $ take 3 (degToMinSec
         roundUp (y:z:xs) rounded = rounded ++ [if y >= 60 then 0 else y] ++ (roundUp ((if y >= 60 then z+1 else z):xs) [])
 
 
--- todo: better implement normalize/roundup
+-- todo: implement normalize/roundup better
 -- todo: decimal tends to be imprecise e.g. decimal 1.1 tends to be 1.10000...9; is there a better way?
