@@ -1,7 +1,6 @@
 module BinaryTree
   ( BinaryTree
   , exampleTree
---  , show
   , treeSearch
   , treeFromList
   ) where
@@ -12,6 +11,10 @@ instance Show a => Show (BinaryTree a) where
     where _show indent Empty = indent ++ "Empty"
           _show indent (Tree e left right) = let next_indent = indent ++ "    " in
             _show next_indent left ++ "\n" ++ indent ++ show e ++ "\n" ++ _show next_indent right
+
+instance Functor BinaryTree where
+  fmap _ Empty = Empty
+  fmap f (Tree e left right) = Tree (f e) (fmap f left) (fmap f right)
 
 exampleTree = Tree
   5 (Tree 2 (Tree 1 Empty Empty) (Tree 3 Empty Empty)) (Tree 9 Empty Empty)
@@ -31,3 +34,4 @@ treeFromList = _treeFromList Empty
           | e < x = Tree e left (_treeFromList right xs)
           | e > x = Tree e (_treeFromList left xs) right
           | otherwise = _treeFromList t xs
+
