@@ -27,11 +27,38 @@ treeSearch x (Tree e left right)
   | otherwise = treeSearch x right
 
 treeFromList :: (Ord a, Eq a) => [a] -> BinaryTree a
-treeFromList = _treeFromList Empty
-  where _treeFromList t [] = t
-        _treeFromList Empty (x:xs) = _treeFromList (Tree x Empty Empty) xs
-        _treeFromList t@(Tree e left right) xs@(x:_)
-          | e < x = Tree e left (_treeFromList right xs)
-          | e > x = Tree e (_treeFromList left xs) right
-          | otherwise = _treeFromList t xs
+treeFromList xs = foldr treeAddElement Empty xs
 
+treeAddElement :: (Ord a, Eq a) => a -> BinaryTree a -> BinaryTree a
+treeAddElement x Empty = Tree x Empty Empty
+treeAddElement x t@(Tree e left right)
+  | x < e = Tree e (treeAddElement x left) right
+  | x > e = Tree e left (treeAddElement x right)
+  | otherwise = t
+
+treeDepth :: (Integral b) => BinaryTree a -> b
+treeDepth Empty = 0
+treeDepth (Tree e left right) = 1 + max (treeDepth left) (treeDepth right)
+
+treeWalk :: BinaryTree a -> [a]
+treeWalk Empty = []
+treeWalk (Tree e left right) = e : treeWalk left ++ treeWalk right
+
+treeWalk' :: BinaryTree a -> [a]
+treeWalk' Empty = []
+treeWalk' (Tree e left right) = treeWalk right ++ treeWalk left ++ [e]
+
+treeAddTree :: (Ord a) => BinaryTree a -> BinaryTree a -> BinaryTree a
+treeAddTree Empty Empty = Empty
+treeAddTree t Empty = t
+treeAddTree Empty t = t
+treeAddTree t1@(Tree e1 left1 right1) t2@(Tree e2 left2 right2)
+  | treeDepth t1 >= treeDepth t2 = foldr treeAddElement t1 $ treeWalk' t2
+  | otherwise = foldr treeAddElement t2 $ treeWalk' t1
+
+treeRemoveElement :: (Ord a, Eq a) => a -> BinaryTree a -> BinaryTree a
+treeRemoveElement _ Empty = Empty
+treeRemoveElement x t@(Tree e left right)
+  | x < e = Tree e (treeRemoveElement x left) right
+  | x > e = Tree e left (treeRemoveElement x right)
+  | otherwise = treeAddTree left right
