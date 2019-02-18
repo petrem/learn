@@ -4,7 +4,6 @@
 split :: [a] -> Int -> ([a], [a])
 split [] _ = ([], [])
 split xs 0 = ([], xs)
-split [x] _ = ([x], [])
 split (x:xs) n = (x:(fst $ split xs (n-1)), snd $ split xs (n-1))
 
 
