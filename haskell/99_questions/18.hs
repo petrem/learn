@@ -5,5 +5,5 @@
 slice :: [a] -> Int -> Int -> [a]
 slice l i k = drop (i-1) . take k $ l
 
-slice :: [a] -> Int -> Int -> [a]
+slice' :: [a] -> Int -> Int -> [a]
 slice' l i k = fst $ splitAt (k-i+1) $ snd $ splitAt (i-1) l

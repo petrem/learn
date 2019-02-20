@@ -1,3 +1,4 @@
 * understand copied solution for #6
 * continue second solution for #7
 * can a modulo type be defined as started in #16?
+* revisit #20 after learning about monads and the reader monad
