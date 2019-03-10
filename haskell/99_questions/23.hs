@@ -6,8 +6,6 @@ import System.Random
 import System.Environment
 
 
--- without '>>=' stuff that i have no clue about at this point
-
 deleteIndexes :: [Int] -> [a] -> [a]
 deleteIndexes is xs = map snd $ filter fst $ zip markers xs
   where markers = [if i `elem` is then False else True |i <- [0..]]
@@ -43,24 +41,27 @@ _rnd_select gen n xs rs =
     (rnd, newGen) = randomR (0, max 0 (length xs - 1)) gen
     (extraction, remaining) = extractAt rnd xs
 
+rnd_select :: Show a => Int -> [a] -> IO String
 rnd_select n xs = do
   gen <- newStdGen
-  return $ _rnd_select gen n xs []
+  return $ show $ _rnd_select gen n xs []
 
 
 
 strToInt :: String -> Int
 strToInt s = read s :: Int
 
+type ErrorMessage = String
+type ParsedArgs = Either ErrorMessage (Int, [String])
 
-parseArgs :: [String] -> (Int, [String])
-parseArgs (n:xs) = (strToInt n, xs)
-parseArgs _ = errorWithoutStackTrace "No arguments. Giving up (cowardly)."
+parseArgs :: [String] -> ParsedArgs
+parseArgs (n:xs) = Right (strToInt n, xs)
+parseArgs _ = Left "No arguments. Giving up (cowardly)."
 
 
 main1 = do
   -- select with repetition (?)
-  (how_many, list) <- parseArgs <$> getArgs
+  Right (how_many, list) <- parseArgs <$> getArgs
   gen <- getStdGen
   let randomIndexes = take how_many $ randomRs (0, max 0 (length list - 1)) gen :: [Int]
   let result = selectIndexes randomIndexes list
@@ -68,6 +69,6 @@ main1 = do
 
 
 main = do
-    (how_many, list) <- parseArgs <$> getArgs
+    Right (how_many, list) <- parseArgs <$> getArgs
     result <- rnd_select how_many list
-    putStrLn $ show result
+    putStrLn result
