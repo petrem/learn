@@ -9,7 +9,7 @@ import Test.Hspec.Runner (configFastFail, defaultConfig, hspecWith)
 import Acronym (abbreviate)
 
 main :: IO ()
-main = hspecWith defaultConfig {configFastFail = True} specs
+main = hspecWith defaultConfig {configFastFail = False} specs
 
 specs :: Spec
 specs = describe "abbreviate" $ for_ cases test
