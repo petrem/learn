@@ -11,9 +11,8 @@ aliquotSum = sum . properDivisors
 
 classify :: Int -> Maybe Classification
 classify x
-  | x <=0 = Nothing
-  | otherwise = Just $ _classify (aliquotSum x)
-  where _classify asum
-          | asum < x  = Deficient
-          | asum == x = Perfect
-          | otherwise = Abundant
+  | x <= 0 = Nothing
+  | otherwise = Just $ case compare <$> aliquotSum <*> id $ x of
+                  LT -> Deficient
+                  EQ -> Perfect
+                  GT -> Abundant
