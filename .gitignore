@@ -11,3 +11,6 @@ py/sci/introduction_to_ml_with_python-master
 *.hi
 *.o
 .stack-work
+.depend
+*.out
+*.dSYM
