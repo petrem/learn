@@ -67,8 +67,7 @@ int bst_find(struct BST *bst, const char *key, int *previous) {
   return -1;
 }
 
-/* bst_insert: Add element to binary search tree bst. Does not copy the string. TODO: ???
- *             Clients will need to free them before destroying the heap.
+/* bst_insert: Add element to binary search tree bst.
  * returns: >= 0  - element was present at the specified index
  *            -1  - element was added
  *            -2 - bst size overflowed
