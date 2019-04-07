@@ -7,7 +7,7 @@
 #define STRING_SIZE (MAX_WORD_LENGTH + 1)
 
 word_count_word_t actual_solution[MAX_WORDS];
-word_count_word_t expected_solution[MAX_WORDS];
+word_count_word_t expected_solution[MAX_WORDS + 1];
 void setUp(void)
 {
 }
@@ -26,9 +26,6 @@ static void check_solution(word_count_word_t * expected_solution,
 
    // now test the word count for the words...
    for (int index = 0; index < MAX_WORDS; index++) {
-     /* printf("I: %d\n", index); */
-     /* printf("count: expected=%d actual=%d\n", expected_solution[index].count, actual_solution[index].count); */
-     /* printf("text: expected=%s actual=%s\n", expected_solution[index].text, actual_solution[index].text); */
       TEST_ASSERT_EQUAL(expected_solution[index].count,
                         actual_solution[index].count);
       TEST_ASSERT_EQUAL_UINT8_ARRAY(expected_solution[index].text,

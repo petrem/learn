@@ -97,7 +97,7 @@ int bst_insert(struct BST *bst, const char *key, int value) {
 
   if (bst->len == bst->max) {
 #ifdef DEBUG
-    printf("bst_find returned error %d\n", found_at);
+    printf("too many words\n");
 #endif
     return -2;
   }

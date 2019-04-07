@@ -71,6 +71,7 @@ int word_count(const char *input_text, word_count_word_t *words) {
       return EXCESSIVE_LENGTH_WORD;
     }
     int inserted = bst_insert(bst, word, 1);
+    //volatile int inserted = -2;
     switch (inserted) {
     case -2:
       free(word);
