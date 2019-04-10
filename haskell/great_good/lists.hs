@@ -123,12 +123,11 @@ zipWith'' :: (a ->b ->c) -> [a] -> [b] -> [c]
 zipWith'' f xs ys = let f' (x,y) = f x y in
                       map f' (zip xs ys)
 
--- todo
--- zipLongest :: [a] -> [b] -> [(Maybe a, Maybe b)]
--- zipLongest [] [] = []
--- zipLongest (x:xs) [] = (x, Nothing) : zipLongest xs []
--- zipLongest [] (y:ys) = (Nothing, y) : zipLongest [] ys
--- zipLongest (x:xs) (y:ys) = (x,y) : zip' xs ys
+zipWithLongest :: (a -> b -> c) -> [a] -> [b] -> [Maybe c]
+zipWithLongest _ [] [] = []
+zipWithLongest _ xs [] = map (const Nothing) xs
+zipWithLongest _ [] ys = map (const Nothing) ys
+zipWithLongest f (x:xs) (y:ys) = Just (f x y) : zipWithLongest f xs ys
 
 
 -- todo
