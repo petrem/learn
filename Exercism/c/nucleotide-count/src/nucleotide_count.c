@@ -7,9 +7,7 @@
 
 
 static inline char *empty_string() {
-  char *result = malloc_or_die(1);
-  result[0] = '\0';
-  return result;
+  return calloc_or_die(1, 1);
 }
 
 
@@ -41,7 +39,7 @@ char *count(const char *strand) {
 
   char *result = NULL;
   const char *result_fmt = "A:%u C:%u G:%u T:%u";
-  unsigned int result_size;
+  int result_size;
 
   /* check for necessary size */
   result_size = snprintf(result, 0, result_fmt, A, C, G, T);
