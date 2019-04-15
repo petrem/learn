@@ -10,8 +10,8 @@ isOnBoard (x, y) = and [x >= 0, x <=7, y >=0, y <= 7]
 
 
 boardString :: Maybe Position -> Maybe Position -> String
-boardString white black = concat [
-  intersperse ' ' [queen (r, f) | f <- [0..7]] ++ "\n" |  r <- [0..7]]
+boardString white black = unlines [
+  intersperse ' ' [queen (r, f) | f <- [0..7]] |  r <- [0..7]]
   where
     queen :: Position -> Char
     queen pos
