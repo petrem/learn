@@ -11,14 +11,15 @@ data Planet = Mercury
 
 
 relativeOrbitalPeriod :: Planet -> Double
-relativeOrbitalPeriod Earth = 1
-relativeOrbitalPeriod Mercury = 0.2408467
-relativeOrbitalPeriod Venus = 0.61519726
-relativeOrbitalPeriod Mars = 1.8808158
-relativeOrbitalPeriod Jupiter = 11.862615
-relativeOrbitalPeriod Saturn = 29.447498
-relativeOrbitalPeriod Uranus = 84.016846
-relativeOrbitalPeriod Neptune = 164.79132
+relativeOrbitalPeriod planet = case planet of
+                                 Earth -> 1
+                                 Mercury -> 0.2408467
+                                 Venus -> 0.61519726
+                                 Mars -> 1.8808158
+                                 Jupiter -> 11.862615
+                                 Saturn -> 29.447498
+                                 Uranus -> 84.016846
+                                 Neptune -> 164.79132
 
 earthYear :: Double
 earthYear = 31557600
