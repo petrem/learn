@@ -53,10 +53,10 @@ gifts = reverse [ "Drummers Drumming"
                 ]
 
 recite :: Int -> Int -> [String]
-recite start stop = [stanza n | n <- [start..stop]] where
+recite start stop = [verse n | n <- [start..stop]] where
   fmt = "On the %s day of Christmas my true love gave to me: %s."
-  stanza n = printf fmt (nth n) (intercalate ", " giftsOfStanza) where
-    giftsOfStanza = reverse $ zipWith spellCount [1..n] (take n gifts)
+  verse n = printf fmt (nth n) (intercalate ", " giftsOfVerse) where
+    giftsOfVerse = reverse $ zipWith spellCount [1..n] (take n gifts)
     spellCount i = unwords . (count i :) . (:[])
     count i
       | i == 1 = if n == 1 then "a" else "and a"
