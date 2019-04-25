@@ -20,7 +20,7 @@ static size_t append(char *ptr, int offset, const char *fmt, ...) {
   va_list args;
   int written;
 
-  if (REST(offset) <= 0) {
+  if (REST(offset) <= 0 || ptr == NULL || fmt == NULL) {
     exit(1);
   }
   va_start(args, fmt);
@@ -38,12 +38,15 @@ static char *beers_str(int n) {
   if (n == 0) {
     return "no more";
   }
-  snprintf(beers_str, 3, "%d", n);
+  snprintf(beers_str, sizeof(beers_str), "%d", n);
   return beers_str;
 }
 
 
 int verse(char *response, int beers) {
+  if (response == NULL) {
+    exit(1);
+  }
   int written = 0;
   char *take_what = "one";
   int next_beers = beers - 1;
@@ -68,6 +71,9 @@ int verse(char *response, int beers) {
 }
 
 void sing(char *response, int from, int to) {
+  if (response == NULL) {
+    exit(1);
+  }
   int written = 0;
   for (; from >= to; from--) {
     written += verse(response + written, from);
