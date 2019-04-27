@@ -48,8 +48,8 @@ mkRobot = Robot
 
 move :: Robot -> String -> Robot
 move = foldl step where
-  step robot i = case i of
-                      'L' -> Robot (prev $ bearing robot) (coordinates robot)
-                      'R' -> Robot (next $ bearing robot) (coordinates robot)
-                      'A' -> Robot (bearing robot) $ fromCoordinates (Coordinates (coordinates robot) <> fromBearing (bearing robot))
+  step (Robot b c) i = case i of
+                      'L' -> Robot (prev b) c
+                      'R' -> Robot (next b) c
+                      'A' -> Robot b $ fromCoordinates (Coordinates c <> fromBearing b)
                       _   -> error ("Unknown instruction: " ++ show i)
