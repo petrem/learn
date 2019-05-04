@@ -2,23 +2,12 @@ from itertools import combinations_with_replacement
 from functools import partial
 
 
-def memoize(f):
-    memo = {}
-
-    def wrapper(x):
-        if x not in memo:
-            memo[x] = f(x)
-        return memo[x]
-    return wrapper
-
-
-@memoize
 def _is_palindrome(n: int) -> bool:
     n_str = str(n)
-    return all(n_str[i] == n_str[-1 - i] for i in range(len(n_str) // 2))
+    return n_str == n_str[::-1]
 
 
-def _all_palindromes(max_factor, min_factor):
+def _all_palindromes(max_factor: int, min_factor: int) -> dict:
     all_palindromes = {}
     for palindrome, factors in (
         (a * b, (a, b))
