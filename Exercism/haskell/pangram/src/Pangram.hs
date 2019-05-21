@@ -2,6 +2,7 @@ module Pangram (isPangram) where
 
 import Data.Char (toLower, isAlpha)
 import Data.List (group, nub, sort)
+import Data.Set (Set)
 import qualified Data.Set as Set
 
 import Control.Exception
@@ -18,15 +19,28 @@ isPangram2 = (26 == ) . length . (map head . group) . sort . map toLower . filte
 
 
 -- likewise, using Sets
+isPangram3 :: String -> Bool
+isPangram3 = (26 == ) . Set.size . Set.fromList . map toLower . filter isAlpha
+
+-- a classic recursive solution
+
+isPangram_ :: Set Char -> String -> Bool
+isPangram_ _ [] = False
+isPangram_ s (x:xs)
+  | not . isAlpha $ x = isPangram_ s xs
+  | Set.size s' == 26 = True
+  | otherwise = isPangram_ s' xs
+  where s' = Set.insert (toLower x) s
+
 isPangram :: String -> Bool
-isPangram = (26 == ) . Set.size . Set.fromList . map toLower . filter isAlpha
+isPangram = isPangram_ Set.empty
 
-
+-- benchmark functions, based on code in http://neilmitchell.blogspot.com/2015/02/nub-considered-harmful.html
 
 benchmark xs = do
     n <- evaluate $ length xs
     (t1,_) <- duration $ evaluate $ isPangram xs
-    (t2,_) <- duration $ evaluate $ isPangram2 xs
+    (t2,_) <- duration $ evaluate $ isPangram3 xs
     putStrLn $ show n ++ "," ++ show t1 ++ "," ++ show t2
 
 main = do
