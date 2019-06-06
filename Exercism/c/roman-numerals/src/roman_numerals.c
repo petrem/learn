@@ -7,8 +7,8 @@
 /* largest 64bit integer has 19 digits */
 #define MAX_ARABIC 19
 
-/* assume numeral <= 3000 */
-#define MAX_ROMAN 12
+/* assume numeral <= 9999, largest is MMMMMMMMMDCCCLXXXVIII (9888) */
+#define MAX_ROMAN 22
 
 
 #define REST(offset) (MAX_ROMAN - (offset))
@@ -37,7 +37,7 @@ static size_t append(char *ptr, int offset, char *repr) {
   }
 
   written = snprintf(ptr + offset, REST(offset), "%s", repr);
-  if (written < 0 || written > REST(offset)) {
+  if (written < 0 || written >= REST(offset)) {
     fputs("Error appending to roman numeral\n", stderr);
     exit(1);
   }
