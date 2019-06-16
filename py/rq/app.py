@@ -1,9 +1,13 @@
+from collections import namedtuple
 import time
 
 from rq import Queue
 from redis import Redis
 
 from tasks import count_words_at_url, content_at_url
+
+
+SpecialMe = namedtuple("SpecialMe", "as_file,path")
 
 
 if __name__ == "__main__":
@@ -24,3 +28,6 @@ if __name__ == "__main__":
     for job in jobs:
         job.refresh()
         print(job.result, job.meta)
+        print(isinstance(job.result, SpecialMe))
+        print(job.result.as_file)
+        print(type(job.result), SpecialMe)

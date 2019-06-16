@@ -1,9 +1,13 @@
 from contextlib import closing
+from collections import namedtuple
 from os import fdopen
 import requests
 from tempfile import mkstemp
 
 from rq import get_current_job
+
+
+SpecialMe = namedtuple("SpecialMe", "as_file,path")
 
 
 class ResponseWrapper():
@@ -19,7 +23,7 @@ def count_words_at_url(url):
     me.save_meta()
     print(f"count task {me.id}: got response {resp.status_code} from {url}")
     print(f"my meta is now {me.meta}")
-    return len(resp.text.split())
+    return SpecialMe(False, len(resp.text.split()))
 
 
 def content_at_url(url):
@@ -32,4 +36,4 @@ def content_at_url(url):
     me.save_meta()
     print(f"content task {me.id}: got response {resp.status_code} from {url}")
     print(f"my meta is now {me.meta}")
-    return path
+    return SpecialMe(True, path)
