@@ -13,10 +13,12 @@
 
 #define REST(offset) (MAX_ROMAN - (offset))
 
-static char *digits[3][10] = {
+static char *digits[4][10] = {
     {"", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"},
     {"", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"},
-    {"", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"}
+    {"", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"},
+    {"", "M", "MM", "MMM", "MMMM", "MMMMM", "MMMMMM", "MMMMMMM",
+     "MMMMMMMM", "MMMMMMMMM"}
 };
 
 static void *
@@ -67,14 +69,6 @@ char *to_roman_numeral(int number) {
   }
 
   written = 0;
-  if (suite == 3) {
-    digit = *ptr - '0';
-    for(;digit--; written++) {
-      roman_numeral[written] = 'M';
-    }
-    suite--;
-    ptr++;
-  }
   for (;*ptr != '\0'; ptr++, suite--) {
     digit = *ptr - '0';
     written += append(roman_numeral, written, digits[suite][digit]);
