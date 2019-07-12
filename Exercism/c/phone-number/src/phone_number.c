@@ -8,7 +8,8 @@
 
 static inline void *calloc_or_die(size_t nmemb, size_t size);
 static void make_error(char *number);
-static bool unacceptable_char(char c);
+
+static const char acceptable_nonalpha[] = "() -.";
 
 char *phone_number_clean(const char *phone_number) {
   char *cleaned = calloc_or_die(12, 1);
@@ -25,7 +26,7 @@ char *phone_number_clean(const char *phone_number) {
       if (len == 12)
         break;
     }
-    else if (unacceptable_char(*p))
+    else if (strchr(acceptable_nonalpha, *p) == NULL)
       break;
   }
   if (len == 11 && cleaned[0] == '1') {
@@ -48,14 +49,6 @@ static inline void *calloc_or_die(size_t nmemb, size_t size) {
 
 static void make_error(char *number) {
   static const char error[] = "0000000000";
-  const char *ep = error;
-  while ((*number++ = *ep++));
+  strcpy(number, error);
 }
 
-static bool unacceptable_char(char c) {
-  static const char acceptable[] = "() -.";
-  for (const char *ap = acceptable; *ap; ap++)
-    if (*ap == c)
-      return false;
-  return true;
-}
