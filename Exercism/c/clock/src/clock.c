@@ -22,7 +22,7 @@ clock_t clock_create(int hour, int minute) {
   hour = hour % 24;
   if (hour < 0)
     hour += 24;
-  snprintf(&clock.text[0], MAX_STR_LEN, "%.2u:%.2u", hour, minute);
+  snprintf(&clock.text[0], MAX_STR_LEN, "%.2d:%.2d", hour, minute);
   return clock;
 }
 
@@ -50,6 +50,6 @@ static int div_floor(int num, int div) {
 
 static struct clock_hm extract_clock(clock_t clock) {
   struct clock_hm c;
-  sscanf(clock.text, "%u:%u", &c.hour, &c.minute);
+  sscanf(clock.text, "%d:%d", &c.hour, &c.minute);
   return c;
 }
