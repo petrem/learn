@@ -12,6 +12,7 @@ struct clock_hm {
 static int div_floor(int num, int div);
 static struct clock_hm extract_clock(clock_t clock);
 
+#define CLOCK_FMT(precision) "%" #precision "d:%" #precision "d"
 
 clock_t clock_create(int hour, int minute) {
   clock_t clock;
@@ -22,7 +23,7 @@ clock_t clock_create(int hour, int minute) {
   hour = hour % 24;
   if (hour < 0)
     hour += 24;
-  snprintf(&clock.text[0], MAX_STR_LEN, "%.2d:%.2d", hour, minute);
+  snprintf(clock.text, MAX_STR_LEN, CLOCK_FMT(.2), hour, minute);
   return clock;
 }
 
@@ -50,6 +51,6 @@ static int div_floor(int num, int div) {
 
 static struct clock_hm extract_clock(clock_t clock) {
   struct clock_hm c;
-  sscanf(clock.text, "%d:%d", &c.hour, &c.minute);
+  sscanf(clock.text, CLOCK_FMT(), &c.hour, &c.minute);
   return c;
 }
