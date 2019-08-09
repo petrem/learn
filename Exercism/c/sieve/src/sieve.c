@@ -7,7 +7,7 @@
 
 
 #define WORDTYPE uint_fast32_t
-#define WORDSIZE sizeof(WORDTYPE)
+#define WORDSIZE sizeof(WORDTYPE) * 8
 #define WORDMASK (WORDTYPE) WORDSIZE - 1
 
 #define UNMARKED  (unsigned) 0
