@@ -4,19 +4,15 @@ from math import sqrt, trunc
 
 
 def primes(limit):
-    primes = []
-    marks = BitArray(limit + 1)
+    marks = BitArray(limit)
     mark_until = trunc(sqrt(limit))
     for i in range(2, mark_until + 1):
         if marks[i] == 0:
-            primes.append(i)
             for j in range(i * i, limit + 1, i):
                 marks[j] = 1
 
-    for i in range(mark_until + 1, limit + 1):
-        if marks[i] == 0:
-            primes.append(i)
-    return primes
+    marks[0] = marks[1] = 1  # skip 0 and 1 which are not primes
+    return [candidate for candidate, marked in enumerate(marks) if not marked]
 
 
 class BitArray():
@@ -44,3 +40,10 @@ class BitArray():
 
     def __str__(self):
         return "[" + ", ".join(str(self[i]) for i in range(0, self._size + 1)) + "]"
+
+    def __iter__(self):
+        return self._iterate()
+
+    def _iterate(self):
+        for i in range(0, self._size + 1):
+            yield self[i]
