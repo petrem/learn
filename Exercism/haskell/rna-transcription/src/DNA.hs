@@ -1,7 +1,8 @@
 module DNA (toRNA) where
 
+-- traverse: like mapM but without the fat!
 toRNA :: String -> Either Char String
-toRNA = mapM transcribe
+toRNA = traverse transcribe
   where
     transcribe 'G' = Right 'C'
     transcribe 'C' = Right 'G'
