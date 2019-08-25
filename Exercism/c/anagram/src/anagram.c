@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <ctype.h>
-#include <stdio.h>
 
 #include "anagram.h"
 
@@ -19,7 +18,6 @@ void anagrams_for(const char *word, struct candidates *candidates) {
   for (size_t i = 0; i < candidates->count; i++) {
     struct candidate *candidate = &candidates->candidate[i];
     candidate->is_anagram = is_anagram(lowword, word_signature, candidate->candidate);
-    //printf("%s: %d\n", candidate->candidate, candidate->is_anagram);
   }
   free(lowword);
   free(word_signature);

@@ -43,7 +43,6 @@ static void assert_correct_anagrams(struct candidates *candidates,
 
 static void test_no_matches(void)
 {
-  //  TEST_IGNORE();
    char inputs[][MAX_STR_LEN] = {
       "hello",
       "world",
@@ -63,7 +62,6 @@ static void test_no_matches(void)
 
 static void test_detect_simple_anagram(void)
 {
-  //  TEST_IGNORE();               // delete this line to run test
    char inputs[][MAX_STR_LEN] = {
       "tan",
       "stand",
@@ -82,7 +80,6 @@ static void test_detect_simple_anagram(void)
 
 static void test_does_not_confuse_different_duplicates(void)
 {
-  //     TEST_IGNORE();
    char inputs[][MAX_STR_LEN] = {
       "eagle"
    };
@@ -98,7 +95,6 @@ static void test_does_not_confuse_different_duplicates(void)
 
 static void test_eliminate_anagram_subsets(void)
 {
-  //     TEST_IGNORE();
    char inputs[][MAX_STR_LEN] = {
       "dog",
       "goody"
@@ -115,7 +111,6 @@ static void test_eliminate_anagram_subsets(void)
 
 static void test_detect_anagram(void)
 {
-  //     TEST_IGNORE();
    char inputs[][MAX_STR_LEN] = {
       "enlists",
       "google",
@@ -135,7 +130,6 @@ static void test_detect_anagram(void)
 
 static void test_multiple_anagrams(void)
 {
-  //     TEST_IGNORE();
    char inputs[][MAX_STR_LEN] = {
       "gallery",
       "ballerina",
@@ -159,7 +153,6 @@ static void test_multiple_anagrams(void)
 
 static void test_case_insensitive_anagrams(void)
 {
-  //   TEST_IGNORE();
    char inputs[][MAX_STR_LEN] = {
       "cashregister",
       "Carthorse",
@@ -177,7 +170,6 @@ static void test_case_insensitive_anagrams(void)
 
 static void test_does_not_detect_a_word_as_its_own_anagram(void)
 {
-  //     TEST_IGNORE();
    char inputs[][MAX_STR_LEN] = {
       "banana"
    };
@@ -194,7 +186,6 @@ static void test_does_not_detect_a_word_as_its_own_anagram(void)
 static void
 test_does_not_detect_a_differently_cased_word_as_its_own_anagram(void)
 {
-  //TEST_IGNORE();
    char inputs[][MAX_STR_LEN] = {
       "bAnana"
    };
