@@ -1,5 +1,8 @@
 #ifndef ANAGRAM_H
 #define ANAGRAM_H
+#define _POSIX_C_SOURCE 200809L
+
+#include <stddef.h>
 
 #define MAX_STR_LEN 20
 
