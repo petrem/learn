@@ -4,7 +4,7 @@ import time
 from rq import Queue
 from redis import Redis
 
-from tasks import count_words_at_url, content_at_url
+#from tasks import count_words_at_url, content_at_url
 
 
 SpecialMe = namedtuple("SpecialMe", "as_file,path")
@@ -17,8 +17,8 @@ if __name__ == "__main__":
 
     # Delay execution of count_words_at_url('http://nvie.com')
     jobs = [
-        q.enqueue(count_words_at_url, 'http://nvie.com'),
-        q.enqueue(content_at_url, 'http://nvie.com')
+        q.enqueue("mypackage.tasks.count_words_at_url", 'http://nvie.com'),
+        q.enqueue("mypackage.tasks.content_at_url", 'http://nvie.com')
     ]
 
     # Now, wait a while, until the worker is finished
@@ -30,4 +30,5 @@ if __name__ == "__main__":
         print(job.result, job.meta)
         print(isinstance(job.result, SpecialMe))
         print(job.result.as_file)
+        print(job.result.message)
         print(type(job.result), SpecialMe)

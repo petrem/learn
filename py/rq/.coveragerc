@@ -1,0 +1,16 @@
+# Configuration to control http://nedbatchelder.com/code/coverage
+
+[run]
+# Capture coverage of different routes through conditional branches.
+branch = True
+
+source =
+    mypackage
+
+parallel = True
+concurrency =
+    multiprocessing
+    thread
+
+[report]
+show_missing = True
