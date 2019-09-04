@@ -20,15 +20,22 @@ ASANFLAGS += -fno-omit-frame-pointer
 test: tests.out
 	@./tests.out
 
-memcheck: test/*.c src/*.c src/*.h
+test_bitvector: tests_bv.out
+	@./tests_bv.out
+
+memcheck: test/test_sieve.c src/*.c src/*.h
 	@echo Compiling $@
-	@$(CC) $(ASANFLAGS) $(CFLAGS) src/*.c test/vendor/unity.c test/*.c -o memcheck.out $(LIBS)
+	@$(CC) $(ASANFLAGS) $(CFLAGS) src/*.c test/vendor/unity.c test/test_sieve.c -o memcheck.out $(LIBS)
 	@./memcheck.out
 	@echo "Memory check passed"
 
 clean:
 	rm -rf *.o *.out *.out.dSYM
 
-tests.out: test/*.c src/*.c src/*.h
+tests.out: test/test_sieve.c src/*.c src/*.h
 	@echo Compiling $@
-	@$(CC) $(CFLAGS) src/*.c test/vendor/unity.c test/*.c -o tests.out $(LIBS)
+	@$(CC) $(CFLAGS) src/*.c test/vendor/unity.c test/test_sieve.c -o $@ $(LIBS)
+
+tests_bv.out: test/test_bitvector.c src/*.c src/*.h
+	@echo Compiling $@
+	@$(CC) $(CFLAGS) src/*.c test/vendor/unity.c test/test_bitvector.c -o $@ $(LIBS)

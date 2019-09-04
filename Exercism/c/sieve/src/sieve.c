@@ -5,17 +5,8 @@
 #include <stdio.h>
 #include <errno.h>
 
-
-#define WORDTYPE uint_fast32_t
-#define WORDSIZE sizeof(WORDTYPE) * 8
-#define WORDMASK (WORDTYPE) WORDSIZE - 1
-
-#define UNMARKED  (unsigned) 0
-#define NOT_PRIME (unsigned) 1
-
-static WORDTYPE *bitvector_init(uint32_t limit);
-static inline void bitvector_set(WORDTYPE *vector, uint32_t index, unsigned value);
-static inline unsigned bitvector_get(WORDTYPE *vector, uint32_t index);
+#include "bitvector.h"
+#include "sieve.h"
 
 
 uint32_t sieve(uint32_t limit, uint32_t *primes, size_t max_primes) {
@@ -38,28 +29,6 @@ uint32_t sieve(uint32_t limit, uint32_t *primes, size_t max_primes) {
         break;
     }
   }
+  free(marks);
   return n_primes;
-}
-
-
-static WORDTYPE *bitvector_init(uint32_t limit) {
-  WORDTYPE *data = calloc((limit + WORDSIZE - 1) / WORDSIZE, WORDSIZE);
-  if (data == NULL) {
-    fputs("Could not allocate memory. Good bye!", stderr);
-    exit(ENOMEM);
-  }
-  return data;
-}
-
-static inline void bitvector_set(WORDTYPE *vector, uint32_t index, unsigned value) {
-  size_t word_index = index / WORDSIZE;
-  size_t shift = index & WORDMASK;
-  WORDTYPE word = vector[word_index];
-  if (((word >> shift) & 1) != value) {
-    vector[word_index] = word ^ (1 << shift);
-  }
-}
-
-static inline unsigned bitvector_get(WORDTYPE *vector, uint32_t index) {
-  return (vector[index / WORDSIZE] >> (index & WORDMASK)) & 1;
 }
