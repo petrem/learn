@@ -4,15 +4,10 @@ from functools import partial
 import sys
 
 
-# TODO: make a cyclic iterator 99..0 and back to 99 to determine current and remaining
-# e.g. list(islice(zip(cycle(range(9, -1, -1)), islice(cycle(range(9, -1, -1)), 1, None)), 0, 20))
-# TODO: probably can get rid of Stanza subclassing at this point
-
-
 def recite(start: int, take: int = 1) -> str:
     stanzas = chain(
         (partial(GenericStanza, i) for i in range(99, 1, -1)),
-        (partial(OneBottleStanza, 1), NoBottlesStanza)
+        (partial(OneBottleStanza, 1), partial(NoBottlesStanza, 0))
     )
     return list(
         chain(
@@ -78,7 +73,7 @@ class Stanza(metaclass=ABCMeta):
 
     def __init__(self, how_many_bottles):
         self.current_bottles = make_bottles(how_many_bottles)
-        self.remaining_bottles = make_bottles(how_many_bottles - 1)
+        self.remaining_bottles = make_bottles((how_many_bottles - 1) % 100)
         print(f"Called with {how_many_bottles}")
 
     @property
@@ -116,10 +111,6 @@ class OneBottleStanza(Stanza):
 
 
 class NoBottlesStanza(Stanza):
-
-    def __init__(self):
-        self.current_bottles = NoMoreBottles()
-        self.remaining_bottles = ManyBottles(99)
 
     def action(self):
         return "Go to the store and buy some more"
