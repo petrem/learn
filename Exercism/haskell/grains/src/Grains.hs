@@ -7,5 +7,5 @@ square n
   where validSquare = (&&) <$> (1 <= ) <*> (<= 64)
 
 total :: Integer
-total = 18446744073709551615
+total = 0xffffffffffffffff
 
