@@ -3,7 +3,7 @@ module Grains
   , total
   ) where
 
-import Data.Maybe (fromJust)
+import Data.Maybe (fromJust, mapMaybe)
 
 default (Integer)
 
@@ -33,3 +33,6 @@ total = sum [2^x | x <-[0..63]]
 
 total' :: Integer
 total' = fromJust (sum <$> traverse square [1..64])
+
+total'' :: Integer
+total'' = sum . mapMaybe square $ [1..64]
