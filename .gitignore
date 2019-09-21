@@ -16,3 +16,4 @@ py/sci/introduction_to_ml_with_python-master
 *.dSYM
 .coverage*
 dist-newstyle/
+*.lock
