@@ -9,7 +9,7 @@ def saddle_points(matrix):
         raise ValueError("Irregular matrix")
     rows_candidates = defaultdict(set)
     cols_candidates = defaultdict(set)
-    cols_min = matrix[0]
+    cols_min = list(matrix[0])
     for i, row in enumerate(matrix, start=1):
         row_max = row[0]
         for j, elem in enumerate(row, start=1):
