@@ -1,4 +1,5 @@
 export const solve = (x, y) => {
+    if (Number.isNaN(Number(x)) || Number.isNaN(Number(y))) return null;
     let d_squared = x*x + y*y;
     let scores = [
         {"radius": 1, "score": 10}
