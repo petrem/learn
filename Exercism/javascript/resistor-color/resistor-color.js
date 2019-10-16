@@ -1,8 +1,6 @@
 export const colorCode = (color) => {
-    if (typeof(color) !== "string")
-        return null;
-    let value = COLORS.findIndex((x) => {return x === color.toLowerCase()});
-    return value >=0 ? value : null;
+    let value = COLORS.indexOf(color.toLowerCase());
+    return value >= 0 ? value : null;
 };
 
 export const COLORS = [
