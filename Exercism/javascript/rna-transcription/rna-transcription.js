@@ -1,4 +1,4 @@
-let TRANSCRIBED = {
+const TRANSCRIBED = {
     "C": "G",
     "G": "C",
     "T": "A",
@@ -6,5 +6,5 @@ let TRANSCRIBED = {
 };
 
 export const toRna = (dna) => {
-    return dna.split("").map((c) => TRANSCRIBED[c]).join("")
+    return dna.split("").map((c) => TRANSCRIBED[c]).join("");
 };
