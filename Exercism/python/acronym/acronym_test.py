@@ -35,6 +35,12 @@ class AcronymTest(unittest.TestCase):
     def test_apostrophes(self):
         self.assertEqual(abbreviate("Halley's Comet"), "HC")
 
+    def test_apostrophes2(self):
+        self.assertEqual(abbreviate("Chief O'Brian"), "CO")
+
+    def test_apostrophes3(self):
+        self.assertEqual(abbreviate("Moris' Mice"), "MM")
+
     def test_underscore_emphasis(self):
         self.assertEqual(abbreviate("The Road _Not_ Taken"), "TRNT")
 
