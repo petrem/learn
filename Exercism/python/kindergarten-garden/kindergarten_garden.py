@@ -21,6 +21,8 @@ class Garden(object):
         "V": "Violets",
     }
 
+    PLANTS_PER_STUDENT_PER_ROW = 2
+
     def __init__(self, diagram, students=DEFAULT_STUDENTS):
         self._students = sorted(students)
         self._diagram = diagram.splitlines()
@@ -29,11 +31,15 @@ class Garden(object):
             or len(self._diagram[0]) != len(self._diagram[1])
             or len(self._diagram[0]) % 2 != 0
         ):
-            raise ValueError("Diagram should have two even, equal lines")
+            raise ValueError("Diagram should have two even, equal length lines")
 
     def plants(self, student):
-        pos = self._students.index(student) * 2
+        # get student's plants position in row
+        pos = self._students.index(student) * self.PLANTS_PER_STUDENT_PER_ROW
         return [
             self.PLANTS[plant]
-            for plant in self._diagram[0][pos:pos + 2] + self._diagram[1][pos:pos + 2]
+            for plant in (
+                self._diagram[0][pos:pos + self.PLANTS_PER_STUDENT_PER_ROW]
+                + self._diagram[1][pos:pos + self.PLANTS_PER_STUDENT_PER_ROW]
+            )
         ]
