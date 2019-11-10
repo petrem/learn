@@ -18,17 +18,19 @@ if __name__ == "__main__":
     # Delay execution of count_words_at_url('http://nvie.com')
     jobs = [
         q.enqueue("mypackage.tasks.count_words_at_url", 'http://nvie.com'),
-        q.enqueue("mypackage.tasks.content_at_url", 'http://nvie.com')
+        q.enqueue("mypackage.tasks.content_at_url", 'http://nvie.com'),
+        q.enqueue("mypackage.tasks.sleepy"),
     ]
 
     # Now, wait a while, until the worker is finished
-    while any(not job.is_finished for job in jobs):
-        time.sleep(0.5)
+    while any(not (job.is_finished or job.is_failed) for job in jobs):
+        time.sleep(1)
 
     for job in jobs:
         job.refresh()
-        print(job.result, job.meta)
+        print(job, job.result, job.meta)
         print(isinstance(job.result, SpecialMe))
-        print(job.result.as_file)
-        print(job.result.message)
-        print(type(job.result), SpecialMe)
+        #print(job.result.as_file)
+        #print(job.result.message)
+        #print(type(job.result), SpecialMe)
+        print(job.exc_info)

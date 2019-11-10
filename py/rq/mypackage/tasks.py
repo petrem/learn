@@ -5,6 +5,7 @@ import requests
 from tempfile import mkstemp
 import signal
 import sys
+import time
 
 from rq import get_current_job
 
@@ -52,3 +53,12 @@ def content_at_url(url):
     print(f"content task {me.id}: got response {resp.status_code} from {url}")
     print(f"my meta is now {me.meta}")
     return SpecialMe(True, path, "bar")
+
+
+def sleepy():
+    try:
+        time.sleep(300)
+    except Exception as e:
+        print(f"Oh no! I've been shot by {e}")
+        raise
+    return "It's morning?"
