@@ -1,7 +1,7 @@
 module Pangram (isPangram) where
 
 import Data.Char (toLower, isAlpha)
-import Data.List (group, nub, sort)
+import Data.List (all, group, nub, sort)
 import Data.Set (Set)
 import qualified Data.Set as Set
 
@@ -22,6 +22,11 @@ isPangram2 = (26 == ) . length . (map head . group) . sort . map toLower . filte
 isPangram3 :: String -> Bool
 isPangram3 = (26 == ) . Set.size . Set.fromList . map toLower . filter isAlpha
 
+-- a more straight-forward approach
+isPangram :: String -> Bool
+isPangram xs = all (`elem` map toLower xs) alphabet
+  where alphabet = ['a'..'z']
+
 -- a classic recursive solution
 
 isPangram_ :: Set Char -> String -> Bool
@@ -32,8 +37,9 @@ isPangram_ s (x:xs)
   | otherwise = isPangram_ s' xs
   where s' = Set.insert (toLower x) s
 
-isPangram :: String -> Bool
-isPangram = isPangram_ Set.empty
+isPangram4 :: String -> Bool
+isPangram4 = isPangram_ Set.empty
+
 
 -- benchmark functions, based on code in http://neilmitchell.blogspot.com/2015/02/nub-considered-harmful.html
 
