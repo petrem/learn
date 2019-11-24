@@ -3,16 +3,20 @@
 #include <stdbool.h>
 #include <string.h>
 
+#define LETTERS_IN_ALPHABET 26
+
 bool is_pangram(const char *sentence) {
-  bool used[26];
+  bool seen[LETTERS_IN_ALPHABET];
+  unsigned used = 0;
   if (sentence == NULL)
     return false;
-  memset(used, false, sizeof(used));
+  memset(seen, false, sizeof(seen));
   for (const char *p = sentence; *p; p++)
-    if (isalpha(*p))
-      used[tolower(*p) - 'a'] = true;
-  for (unsigned long i = 0; i < sizeof(used); i++)
-    if (!used[i])
-      return false;
-  return true;
+    if (isalpha(*p)) {
+      if (!seen[tolower(*p) - 'a']) {
+        seen[tolower(*p) - 'a'] = true;
+      }
+      used++;
+    }
+  return used == LETTERS_IN_ALPHABET;
 }
