@@ -1,21 +1,20 @@
 export class Matrix {
   constructor(str) {
-    this.matrix = str.replace("\r", "")
+    this._rows = str.replace("\r", "")
       .split("\n")
-      .map((row) => row.split(" ").map(Number));
-    this.n_rows = this.matrix.length;
-    this.n_cols = this.matrix[0].length;
-    if (!(this.matrix.every((row) => row.length == this.n_cols))) {
+      .map((row) => row.split(" ").map((x) => parseInt(x, 10)));
+    let n_cols = this._rows[0].length;
+    if (!(this._rows.every((row) => row.length == n_cols))) {
       throw new Error("Matrix should have same number of columns on each row");
     }
   }
 
   get rows() {
-    return this.matrix;
+    return this._rows;
   }
 
   get columns() {
-    return zip(this.matrix);
+    return zip(this._rows);
   }
 }
 
