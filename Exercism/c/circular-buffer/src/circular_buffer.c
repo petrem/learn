@@ -1,6 +1,7 @@
 #include "circular_buffer.h"
 
 #include <stdlib.h>
+#include <string.h>
 #include <stdbool.h>
 #include <errno.h>
 
@@ -30,7 +31,9 @@ status_t delete_buffer(circular_buffer_t *buffer) {
 
 status_t read(circular_buffer_t *buffer, buffer_value_t *value) {
   if (buffer->size > 0) {
-    *value = buffer->data[subm(buffer->head + buffer->capacity, buffer->size, buffer->capacity)];
+    size_t tail = subm(buffer->head + buffer->capacity, buffer->size, buffer->capacity);
+    *value = buffer->data[tail];
+    buffer->data[tail] = 0;
     buffer->size -= 1;
     return EXIT_SUCCESS;
   }
@@ -52,6 +55,8 @@ status_t write(circular_buffer_t *buffer, buffer_value_t value) {
 
 void clear_buffer(circular_buffer_t *buffer) {
   buffer->size = 0;
+  memset(buffer->data, 0, buffer->capacity * sizeof(buffer_value_t));
+
 }
 
 status_t overwrite(circular_buffer_t *buffer, buffer_value_t value) {
