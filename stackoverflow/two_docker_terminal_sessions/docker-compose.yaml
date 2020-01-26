@@ -1,0 +1,13 @@
+version: '3'
+services:
+  htop_one:
+    build: .
+    environment:
+      TERM: "linux"
+    command: ["top"]
+
+  htop_two:
+    build: .
+    environment:
+      TERM: "linux"
+    command: ["top"]

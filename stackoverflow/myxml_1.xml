@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xyz date="2019-07-01T09:00:29">
+  <abc>
+    <id>23</id>
+    <uniqueid>23_0</uniqueid>
+    <Name></Name>
+    <Rate>
+      <mrp>6.40000</mrp>
+      <discount>10.00%</discount>
+      <discountmonths>2</discountmonths>
+    </Rate>
+    <fee>
+      <type>off</type>
+      <minimumfee>£1,500.75</minimumfee>
+      <maxfee>£10K</maxfee>
+    </fee>
+  </abc>
+  <abc>
+    <id>35</id>
+    <uniqueid>35_0</uniqueid>
+    <Name></Name>
+    <Rate>
+      <mrp>7.90000</mrp>
+      <discount>5.00%</discount>
+      <discountmonths>5</discountmonths>
+    </Rate>
+    <fee>
+      <type>offer</type>
+      <minimumfee>£1k</minimumfee>
+      <maxfee>£22,000</maxfee>
+    </fee>
+  </abc>
+</xyz>
