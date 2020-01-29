@@ -23,13 +23,23 @@ def _square_crypt(message: str) -> str:
     )
 
 
+# This is intuitive and seems to work
 def _get_cols_rows(n: int) -> Tuple[int, int]:
+    cols = ceil(sqrt(n))
+    rows = ceil(n / cols)
+    return cols, rows
+
+
+# Alternatively, this searches for a solution
+# Yields the same results for integers upto 10000 at least...
+# TODO: I should think about the math
+def _get_cols_rows2(n: int) -> Tuple[int, int]:
     return min(
         (c, r)
-        for c, r in product(_range_upto_sqrt(n), _range_upto_sqrt(n))
+        for c, r in product(_range_downfrom_sqrt(n), _range_downfrom_sqrt(n))
         if c >= r and c - r <= 1 and c * r >= n
     )
 
 
-def _range_upto_sqrt(n: int) -> range:
-    return range(1, ceil(sqrt(n)) + 1)
+def _range_downfrom_sqrt(n: int) -> range:
+    return range(ceil(sqrt(n)), 0, -1)
