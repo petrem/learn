@@ -17,10 +17,13 @@ def _square_crypt(message: str) -> str:
     c, r = _get_cols_rows(len(message))
     padding = " " * (c * r - len(message))
     message += padding
-    return " ".join(
-        "".join(message[i * c + j] for i in range(r))
-        for j in range(c)
-    )
+    # # Previous:
+    # return " ".join(
+    #     "".join(message[i * c + j] for i in range(r))
+    #     for j in range(c)
+    # )
+    # This was was stolen from https://exercism.io/tracks/python/exercises/crypto-square/solutions/024dc3efe767411f86af7740e6358434
+    return " ".join(message[i::c] for i in range(c))
 
 
 # This is intuitive and seems to work
