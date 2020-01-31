@@ -10,7 +10,7 @@ export const rows = (n) => {
 
 const next_row = (row) => zipWith(
   (a, b) => a + b,
-  [[0].concat(row), row.concat([0])]
+  [[0, ...row], [...row, 0]]
 );
 
 const zipWith = (op, rows) => rows[0].map(
