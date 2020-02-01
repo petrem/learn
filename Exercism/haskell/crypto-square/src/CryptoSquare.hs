@@ -1,12 +1,12 @@
 module CryptoSquare (encode) where
 
 import Data.Char (isAlphaNum, toLower)
-import Data.List (intercalate, transpose)
+import Data.List (transpose)
 import Data.List.Split (chunksOf)
 
 
 encode :: String -> String
-encode xs = intercalate " " (transpose . chunksOf cols $ padded)
+encode xs = unwords (transpose . chunksOf cols $ padded)
   where
     normalized = map toLower $ filter isAlphaNum xs
     cols = ceiling (sqrt (len normalized))
