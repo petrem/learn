@@ -26,6 +26,16 @@ rank = fst
 file :: (a, b) -> b
 file = snd
 
+canAttack :: Position -> Position -> Bool
+canAttack queenA queenB
+  | rank queenA == rank queenB = True
+  | file queenA == file queenB = True
+  | otherwise                  =
+      absDiff (file queenA) (file queenB) == absDiff (rank queenA) (rank queenB)
+  where absDiff x y = abs(x - y)
+
+-- A more interesting way (though not efficient, obviously)
+
 newtype AdditiveInt = I { getInt :: Int } deriving (Eq, Ord, Show)
 
 instance Semigroup AdditiveInt where
@@ -37,8 +47,8 @@ diagonAlleys pos = filter isOnBoard $ map getPosition [fromPosition pos <> fromP
         getPosition (I x, I y) = (x, y)
         fromPosition (x, y) = (I x, I y)
 
-canAttack :: Position -> Position -> Bool
-canAttack queenA queenB
+canAttack' :: Position -> Position -> Bool
+canAttack' queenA queenB
   | rank queenA == rank queenB        = True
   | file queenA == file queenB        = True
   | queenA `elem` diagonAlleys queenB = True
