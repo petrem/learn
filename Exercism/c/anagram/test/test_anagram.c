@@ -4,7 +4,7 @@
 #include "vendor/unity.h"
 #include "../src/anagram.h"
 
-#define MAX_STR_LEN 20
+#define MAX_STR_LEN 21
 
 struct candidates candidates = {NULL, 0};
 
@@ -201,7 +201,6 @@ test_does_not_detect_a_differently_cased_word_as_its_own_anagram(void)
 
 static void test_unicode_anagrams(void)
 {
-   TEST_IGNORE();               // This is an extra credit test.  Delete this line to accept the challenge
    // These words don't make sense, they're just greek letters cobbled together.
    char inputs[][MAX_STR_LEN] = {
       "ΒΓΑ",
@@ -218,19 +217,42 @@ static void test_unicode_anagrams(void)
    assert_correct_anagrams(&candidates, expected);
 }
 
+static void test_mixed_unicode_anagrams(void)
+{
+   // These words don't make sense, they're just latin and greek letters cobbled together.
+   char inputs[][MAX_STR_LEN] = {
+      "efΑΑΑΒdddeΒΓ",
+      "ΑdΑdΑdΒeΒeΓf",
+      "ΑΑΑΒΒΓdddef",
+      "ΑΑΒΒΓdddeef",
+      "ΑΑΑΒΒΓdddeeff",
+      "ΑΑΑΒΒΓΓdddeef"
+   };
+
+   char word[] = { "ΑΑΑΒΒΓdddeef" };
+
+   candidates = build_candidates(*inputs, sizeof(inputs) / MAX_STR_LEN);
+   enum anagram_status expected[] = {
+       IS_ANAGRAM, IS_ANAGRAM, NOT_ANAGRAM, NOT_ANAGRAM, NOT_ANAGRAM, NOT_ANAGRAM
+   };
+
+   anagrams_for(word, &candidates);
+   assert_correct_anagrams(&candidates, expected);
+}
+
 static void test_misleading_unicode_anagrams(void)
 {
-   TEST_IGNORE();               //This is an extra credit test, are you up for the challenge
    // Despite what a human might think these words different letters, the input uses Greek A and B
    // while the list of potential anagrams uses Latin A and B.
    char inputs[][MAX_STR_LEN] = {
-      "ABΓ"
+      "ABΓ",
+      "ΓAB"
    };
 
    char word[] = { "ΑΒΓ" };
 
    candidates = build_candidates(*inputs, sizeof(inputs) / MAX_STR_LEN);
-   enum anagram_status expected[] = { NOT_ANAGRAM };
+   enum anagram_status expected[] = { NOT_ANAGRAM, NOT_ANAGRAM };
 
    anagrams_for(word, &candidates);
    assert_correct_anagrams(&candidates, expected);
@@ -252,6 +274,7 @@ int main(void)
 
    // Bonus points
    RUN_TEST(test_unicode_anagrams);
+   RUN_TEST(test_mixed_unicode_anagrams);
    RUN_TEST(test_misleading_unicode_anagrams);
 
    return UnityEnd();

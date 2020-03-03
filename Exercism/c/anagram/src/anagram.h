@@ -4,7 +4,7 @@
 
 #include <stddef.h>
 
-#define MAX_STR_LEN 20
+#define MAX_STR_LEN 21
 
 enum anagram_status {
    UNCHECKED = -1,
