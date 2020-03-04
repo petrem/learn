@@ -8,4 +8,5 @@ def transpose(lines: str) -> str:
     )
 
 
+# See http://www.unicode.org/faq/private_use.html for discussion
 _SENTINEL = "uFFFF"
