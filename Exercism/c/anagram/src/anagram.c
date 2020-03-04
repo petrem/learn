@@ -7,8 +7,6 @@
 
 #include "anagram.h"
 
-#include <stdio.h>
-
 
 typedef struct sig_entry {
   unsigned int ch;
@@ -25,10 +23,13 @@ static signature_t *u8_signature(const char *word);
 static enum anagram_status
 u8_is_anagram(const char *word, const signature_t *word_signature, const char *candidate);
 static bool u8_compare_signatures(const signature_t *sig1, const signature_t *sig2);
+static void free_signature(signature_t *sig);
 
 static char *strtolower(const char *word);
 static void *calloc_or_die(size_t n_memb, size_t size);
 static inline unsigned int min(unsigned int a, unsigned int b);
+
+#define isascii(c) (((c) & 0x80) == 0)
 
 /* UTF-8 routines, taken from https://www.cprogramming.com/tutorial/unicode.html */
 
@@ -36,7 +37,7 @@ static inline unsigned int min(unsigned int a, unsigned int b);
    for the second, third or fourth byte in an UTF-8 encoded character
 */
 #define isutf(c) (((c) & 0xC0) != 0x80)
-static u_int32_t u8_nextchar(const char *s, int *i);
+static uint32_t u8_nextchar(const char *s, int *i);
 
 
 void anagrams_for(const char *word, struct candidates *candidates) {
@@ -47,7 +48,7 @@ void anagrams_for(const char *word, struct candidates *candidates) {
     candidate->is_anagram = u8_is_anagram(lowword, word_signature, candidate->candidate);
   }
   free(lowword);
-  free(word_signature);
+  free_signature(word_signature);
 }
 
 /* returns the string with lowercased ascii letters, but not modifiying other characters */
@@ -55,7 +56,7 @@ static char *strtolower(const char *word) {
   int len = min(strlen(word), MAX_STR_LEN);
   int i = 0, prev_i = 0;
   char *dup = calloc_or_die(sizeof(char), len + 1);
-  u_int32_t ch;
+  uint32_t ch;
 
   while (word[i]) {
     ch = u8_nextchar(word, &i);
@@ -86,7 +87,7 @@ static void *calloc_or_die(size_t n_memb, size_t size) {
 static signature_t *u8_signature(const char *word) {
   signature_t *sig = calloc_or_die(1, sizeof(signature_t));
   int i = 0;
-  u_int32_t ch;
+  uint32_t ch;
 
   while (word[i]) {
     ch = u8_nextchar(word, &i);
@@ -137,23 +138,36 @@ u8_is_anagram(const char *word, const signature_t *word_signature, const char *c
     signature_t *candidate_signature = u8_signature(lowcandidate);
     if (!u8_compare_signatures(word_signature, candidate_signature))
       status = NOT_ANAGRAM;
-    free(candidate_signature);
+    free_signature(candidate_signature);
   }
   free(lowcandidate);
   return status;
 }
 
+static void free_signature(signature_t *sig) {
+  if (sig != NULL) {
+    sig_entry_t *p = sig->utf_letters, *q;
+    while (p != NULL) {
+      q = p;
+      p = p->next;
+      free(q);
+    }
+  }
+  free(sig);
+}
+
+
 /* UTF-8 library */
 
-static const u_int32_t offsetsFromUTF8[6] = {
+static const uint32_t offsetsFromUTF8[6] = {
     0x00000000UL, 0x00003080UL, 0x000E2080UL,
     0x03C82080UL, 0xFA082080UL, 0x82082080UL
 };
 
 
-static u_int32_t u8_nextchar(const char *s, int *i)
+static uint32_t u8_nextchar(const char *s, int *i)
 {
-    u_int32_t ch = 0;
+    uint32_t ch = 0;
     int sz = 0;
 
     do {
