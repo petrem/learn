@@ -19,3 +19,4 @@ dist-newstyle/
 *.lock
 node_modules
 .mypy_cache/
+.idea
