@@ -15,8 +15,12 @@ py/sci/introduction_to_ml_with_python-master
 *.out
 *.dSYM
 .coverage*
-dist-newstyle/
+dist-newstyle
 *.lock
 node_modules
-.mypy_cache/
+.mypy_cache
 .idea
+*.db
+.venv
+venv
+.benchmarks

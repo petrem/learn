@@ -1,0 +1,4 @@
+hypothesis
+pytest
+pytest-benchmark
+pytest-timeout
