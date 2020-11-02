@@ -43,4 +43,5 @@ makeOdd :: Int -> (Steps, Int)
 makeOdd x = let ctz = countTrailingZeros x in (ctz, shiftR x ctz)
 
 takeWhileIncluding :: (a -> Bool) -> [a] -> [a]
-takeWhileIncluding predicate = ((++) <$> fst <*> (:[]) . head . snd ) . span predicate
+takeWhileIncluding predicate = let behead [] = [] ; behead (x:_) = [x] in
+                                 ((++) <$> fst <*> behead . snd ) . span predicate
