@@ -9,3 +9,5 @@ redis
 rq
 requests
 mypy
+filprofiler
+memory_profiler
