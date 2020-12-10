@@ -13,39 +13,26 @@
  * @returns {T[]}
  */
 export function arrange(array, from, to) {
-  from = abs_index(from, array.length);
-  to = abs_index(to, array.length);
-  const card = array.slice(from, from+1);
-  if (from < to) {
-    let slices = [
-      array.slice(0, from),
-      array.slice(from+1, to+1),
-      array.slice(from, from+1), // the moved card
-      array.slice(to+1)
-    ];
-    console.error(slices);
-    return [].concat(...slices);
-  }
-  else if (from > to) {
-    let slices = [
-      array.slice(0, to),
-      array.slice(from, from+1),  // the moved card
-      array.slice(to, from),
-      array.slice(from+1)
-    ];
-    return [].concat(...slices);
-  } else {
-    return array.slice();
-  }
+  [from, to] = [from, to].map(abs_index.bind(null, array.length));
+  // creates at least 3 objects that aren't necessary
+  // maybe [from, to].sort() is faster in this case?
+  const [min, max] = from < to ? [from, to] : [to, from];
+  const array_slicer = Array.prototype.slice.bind(array);
+  return [].concat(
+    ...[].concat(
+      [[0, min]],
+      from < to ? [[min+1, max+1], [min, min+1]] : [[max, max+1], [min, max]],
+      [[max+1]]
+    ).map(slice => array_slicer(...slice))
+  );
 };
 
-const abs_index = (i, n) => (i + n ) % n;
 
-/*
-(0, from), (from+1, to+1), (from, from+1), (to+1, )
-(0, to), (from, from+1), (to, from), (from+1, )
+export function rearrange(array, from, to) {
+  const card = array.splice(from, 1);
+  array.splice(to < 0 ? to+1 : to, 0, ...card);
+  return array;
+};
 
-(0, m), (m+1, M+1), (m, m+1), (M+1, )
-(0, m), (M, M+1), (m, M), (M+1, )
 
-*/
+const abs_index = (n, i) => (i + n ) % n;
