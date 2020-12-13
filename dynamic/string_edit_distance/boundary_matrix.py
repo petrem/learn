@@ -4,7 +4,7 @@ from .operations import insert_cost, delete_cost
 
 
 class BoundaryMatrix:
-    def __init__(self, pattern, text):
+    def __init__(self, strategy, pattern, text):
         self._p_len = len(pattern)
         self._t_len = len(text)
         if self._p_len < 1 or self._t_len < 1:

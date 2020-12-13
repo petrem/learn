@@ -54,3 +54,7 @@ def levenshtein1(pattern, text):
             )
             dists[i, j] = min(possibilities)
     return dists[len(pattern) - 1, len(text) - 1]
+
+
+def edit_distance(strategy, pattern, text):
+    pass
