@@ -1,66 +1,57 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module House (rhyme) where
 
-import Data.List (inits, intersperse)
+import Data.List (intercalate)
 
 
--- data ThingThatDid = ThingThatDid String String
---                   | LastThingThatDid String String
+data SPO = SPO { subject :: String
+               , predicate :: String
+               , object :: NP
+               } deriving (Show)
 
--- instance Show ThingThatDid where
---   show (ThingThatDid thing did) = "the " ++ thing ++ "\nthat " ++ did
---   show (LastThingThatDid thing did) = "the " ++ thing ++ " that " ++ did ++ ".\n"
+data RCl = RCl SPO | End deriving (Show)
 
--- allThingsThatDid :: [ThingThatDid]
--- allThingsThatDid = [LastThingThatDid "house" "Jack built"
---                    ,ThingThatDid "malt" "lay in"
---                    ,ThingThatDid "rat" "ate"
---                    ,ThingThatDid "cat" "killed"
---                    ,ThingThatDid "dog" "worried"
---                    ,ThingThatDid "cow with the crumpled horn" "tossed"
---                    ,ThingThatDid "maiden all forlorn" "milked"
---                    ,ThingThatDid "man all tattered and torn" "kissed"
---                    ,ThingThatDid "priest all shaven and shorn" "married"
---                    ,ThingThatDid "rooster that crowed in the morn" "woke"
---                    ,ThingThatDid "farmer sowing his corn" "kept"
---                    ,ThingThatDid "horse and the hound and the horn" "belonged to"
---                    ]
-
-data ThingThatDid = ThingThatDid String (Maybe String)
-                  -- | LastThingThatDid String String
-
-instance Show ThingThatDid where
-  show (ThingThatDid thing did) = "the " ++ thing ++ "\nthat " ++ did
-  -- show (LastThingThatDid thing did) = "the " ++ thing ++ " that " ++ did ++ ".\n"
-
-allThingsThatDid' :: [ThingThatDid]
-allThingsThatDid' = [LastThingThatDid "house" "Jack built"
-                   ,ThingThatDid "malt" "lay in"
-                   ,ThingThatDid "rat" "ate"
-                   ,ThingThatDid "cat" "killed"
-                   ,ThingThatDid "dog" "worried"
-                   ,ThingThatDid "cow with the crumpled horn" "tossed"
-                   ,ThingThatDid "maiden all forlorn" "milked"
-                   ,ThingThatDid "man all tattered and torn" "kissed"
-                   ,ThingThatDid "priest all shaven and shorn" "married"
-                   ,ThingThatDid "rooster that crowed in the morn" "woke"
-                   ,ThingThatDid "farmer sowing his corn" "kept"
-                   ,ThingThatDid "horse and the hound and the horn" "belonged to"
-                   ]
+data NP = NP { headWord :: String
+             , rCl :: RCl
+             } deriving (Show)
 
 rhyme :: String
-rhyme = joinWith "\n" $ map (stanza . reverse) $ drop 1 . inits $ allThingsThatDid
+rhyme = intercalate "\n" $ map showSPO verses
 
-stanza :: [ThingThatDid] -> String
-stanza ts = "This is " ++ unwords (verses ts)
+verses :: [SPO]
+verses = scanl embed initialStory subStories
 
-verses :: [ThingThatDid] -> [String]
-verses = map show
+initialStory :: SPO
+initialStory = SPO "This" "is" (NP "house that Jack built" End)
 
--- TODO: function name is lacking... meaning
--- it maps f over the elements of a list but the last,
--- then appends g applied to the last
-mapAndLast :: (a -> b) -> (a -> b) -> [a] -> [b]
-mapAndLast f g = (++) <$> (map f) . init <*> (:[]) . g . last
+subStories :: [(String, String)]
+subStories = [ ("malt", "lay in")
+             , ("rat", "ate")
+             , ("cat", "killed")
+             , ("dog", "worried")
+             , ("cow with the crumpled horn", "tossed")
+             , ("maiden all forlorn", "milked")
+             , ("man all tattered and torn", "kissed")
+             , ("priest all shaven and shorn", "married")
+             , ("rooster that crowed in the morn", "woke")
+             , ("farmer sowing his corn", "kept")
+             , ("horse and the hound and the horn", "belonged to")
+             ]
 
-joinWith :: String -> [String] -> String
-joinWith s = concat . intersperse s
+makeRCl :: String -> String -> NP -> NP
+makeRCl hw verb np = NP hw $ RCl (SPO  "that" verb np)
+
+embed :: SPO -> (String, String) -> SPO
+embed (SPO s p o) (hw, verb) = SPO s p (makeRCl hw verb o)
+
+showSPO :: SPO -> String
+showSPO (SPO s p o) = unwords [s, p, showNP o]
+
+showNP :: NP -> String
+showNP np = "the " ++ headWord np ++ showRCl (rCl np)
+
+showRCl :: RCl -> String
+showRCl (RCl spo) = "\n" ++ showSPO spo
+showRCl End = ".\n"
+
